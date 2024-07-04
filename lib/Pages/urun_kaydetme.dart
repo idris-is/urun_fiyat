@@ -115,7 +115,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   hintText: MyTexts().umHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return '${MyTexts().uMarkasi} ' '${MyTexts().bosBirakilamaz}';
+                                      return '${MyTexts().uMarkasi} '
+                                          '${MyTexts().bosBirakilamaz}';
                                     }
                                     return null;
                                   },
@@ -129,7 +130,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   hintText: MyTexts().uaHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return '${MyTexts().uAdi} ' '${MyTexts().bosBirakilamaz}';
+                                      return '${MyTexts().uAdi} '
+                                          '${MyTexts().bosBirakilamaz}';
                                     }
                                     return null;
                                   },
@@ -143,7 +145,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   hintText: MyTexts().ucHinttext,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return '${MyTexts().uCinsi} ' '${MyTexts().bosBirakilamaz}';
+                                      return '${MyTexts().uCinsi} '
+                                          '${MyTexts().bosBirakilamaz}';
                                     }
                                     return null;
                                   },
@@ -157,7 +160,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   hintText: MyTexts().ufHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
-                                      return '${MyTexts().uFiyati} ' '${MyTexts().bosBirakilamaz}';
+                                      return '${MyTexts().uFiyati} '
+                                          '${MyTexts().bosBirakilamaz}';
                                     }
                                     return null;
                                   },
