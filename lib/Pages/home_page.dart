@@ -262,7 +262,7 @@ class MyListTile extends StatelessWidget {
                       fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Markası: ${product['Urun Markasi']}',
+                  'Marka: ${product['Urun Markasi']}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.w600),
@@ -282,7 +282,7 @@ class MyListTile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               const Text(
-                'Fiyat: ',
+                'Fiyat:',
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
               ),
               Text(
