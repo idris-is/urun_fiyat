@@ -30,4 +30,5 @@ class MyTexts {
   String galeri = 'Galeri';
   String uBulunamadi = 'Ürün bulunamadı';
   String uEkle = 'Ürün Ekle';
+  String denemeTexti = 'Bakalım Çalışıyor mu';
 }
