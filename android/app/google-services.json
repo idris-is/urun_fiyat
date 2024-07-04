@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "145013330703",
+    "project_id": "urun-fiyat-listesi",
+    "storage_bucket": "urun-fiyat-listesi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145013330703:android:e1b424fbb63e3cef59647a",
+        "android_client_info": {
+          "package_name": "com.example.urun_fiyat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUntf-kOaCq5YV-QJCQucex4CY6uESDkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
