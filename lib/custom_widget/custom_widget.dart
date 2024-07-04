@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import '../MyFile/String.dart';
 
 class CustomWidget {
-  TextFormField myTextFormField({
-    required String labelText,
-    required TextInputAction textInputAction,
-    required TextEditingController controller,
-    required String? Function(String?)? validator, 
-    required TextInputType keyboardType,
-    required String hintText
-  }) {
+  TextFormField myTextFormField(
+      {required String labelText,
+      required TextInputAction textInputAction,
+      required TextEditingController controller,
+      required String? Function(String?)? validator,
+      required TextInputType keyboardType,
+      required String hintText}) {
     return TextFormField(
       validator: validator,
       controller: controller,
@@ -19,7 +18,7 @@ class CustomWidget {
       cursorColor: Colors.black,
       keyboardType: keyboardType,
       decoration: InputDecoration(
-        hintText: hintText,
+          hintText: hintText,
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: MyColors().myBlack),
               borderRadius: BorderRadius.circular(4.0)),
