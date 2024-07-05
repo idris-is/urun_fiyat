@@ -9,6 +9,7 @@ class MyColors {
 }
 
 class MyTexts {
+  String uAra = 'Ürün Ara';
   String dukkanAdi = 'Medeni Market';
   String uMarkasi = 'Ürün Markası';
   String uAdi = 'Ürün Adı';

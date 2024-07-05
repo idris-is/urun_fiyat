@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
                   decoration: InputDecoration(
                     // ignore: prefer_const_constructors
                     labelStyle: TextStyle(color: Colors.black),
-                    labelText: 'Ürün Ara',
+                    labelText: MyTexts().uAra,
                     prefixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
@@ -301,9 +301,9 @@ class MyListTile extends StatelessWidget {
                       Navigator.pop(context);
                       onUpdate();
                     },
-                    title: const Text(
-                      'Güncelle',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    title: Text(
+                      MyTexts().guncelle,
+                      style: const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
                 ),
@@ -313,9 +313,9 @@ class MyListTile extends StatelessWidget {
                       Navigator.pop(context);
                       onDelete();
                     },
-                    title: const Text(
-                      'Sil',
-                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    title: Text(
+                      MyTexts().sil,
+                      style: const TextStyle(color: Colors.black, fontSize: 20),
                     ),
                   ),
                 ),
