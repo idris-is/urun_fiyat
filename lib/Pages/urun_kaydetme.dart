@@ -47,8 +47,6 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       uCinsi.text = widget.product['Urun Cinsi'] ?? '';
       uFiyati.text = widget.product['Urun Fiyati']?.toString() ?? '';
       imageUrl = widget.product['imageUrl'];
-    } else {
-      imageUrl = 'assets/foto.png'; // Varsayılan fotoğraf
     }
   }
 
@@ -186,7 +184,15 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                         if (widget.isUpdating) {
                           _updateProduct();
                         } else {
-                          _saveProduct();
+                          if (imageFile != null) {
+                            _saveProduct();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Lütfen bir fotoğraf seçin.'),
+                              ),
+                            );
+                          }
                         }
                       }
                     },
@@ -287,10 +293,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       _isLoading = true; // Set loading state to true
     });
 
-    String? downloadUrl;
-    if (imageFile != null) {
-      downloadUrl = await _uploadImage(imageFile!);
-    }
+    String? downloadUrl = await _uploadImage(imageFile!);
 
     Map<String, dynamic> saveData = {
       'Urun Markasi': uMarkasi.text.toLowerCase(),
@@ -307,11 +310,16 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
         .where('Urun Adi', isEqualTo: uAdi.text.toLowerCase())
         .get();
 
-    // Save or update product based on whether it already exists
+    // Save or show error if product with same brand and name exists
     if (snapshot.docs.isEmpty) {
       await _firestore.collection('Urun').add(saveData);
     } else {
-      await _firestore.collection('Urun').doc(widget.docId).update(saveData);
+      // ignore: use_build_context_synchronously
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Bu marka ve ad ile zaten bir ürün mevcut.'),
+        ),
+      );
     }
 
     setState(() {
@@ -327,7 +335,9 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       _isLoading = true; // Set loading state to true
     });
 
-    String? downloadUrl;
+    String? downloadUrl =
+        imageUrl; // Use existing imageUrl if imageFile is null
+
     if (imageFile != null) {
       downloadUrl = await _uploadImage(imageFile!);
     }
