@@ -73,7 +73,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 25, right: 15, left: 15),
+                  padding: const EdgeInsets.only(top: 60, right: 15, left: 15),
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black, width: 4),
@@ -98,7 +98,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                           ? NetworkImage(imageUrl!)
                                           : AssetImage(imageUrl!)
                                               as ImageProvider)
-                                      : const AssetImage('assets/foto.png'),
+                                      : const AssetImage('assets/ic_launcher.png'),
                               radius: 50,
                             ),
                           ),
