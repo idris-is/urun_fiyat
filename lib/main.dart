@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:urun_fiyat/MyFile/String.dart';
 import 'package:urun_fiyat/Pages/home_page.dart';
 import 'package:urun_fiyat/Pages/login.dart';
 
@@ -19,10 +20,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AuthController(),
-      title: 'Ürün Fiyat',
+      home: const AuthController(),
+      title: MyTexts().appName,
     );
   }
 }

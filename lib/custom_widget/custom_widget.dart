@@ -14,18 +14,18 @@ class CustomWidget {
       validator: validator,
       controller: controller,
       textInputAction: textInputAction,
-      style: const TextStyle(color: Colors.black),
+      style: TextStyle(color: MyColors().myTextColor),
       cursorColor: Colors.black,
       keyboardType: keyboardType,
       decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyColors().myBlack),
+              borderSide: BorderSide(color: MyColors().myBorderColor),
               borderRadius: BorderRadius.circular(4.0)),
           focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: MyColors().myBlack),
+              borderSide: BorderSide(color: MyColors().myBorderColor),
               borderRadius: BorderRadius.circular(4.0)),
-          labelStyle: TextStyle(color: MyColors().myBlack),
+          labelStyle: TextStyle(color: MyColors().myBorderColor),
           labelText: labelText,
           border: const OutlineInputBorder()),
     );

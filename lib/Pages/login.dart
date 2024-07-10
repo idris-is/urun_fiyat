@@ -105,8 +105,8 @@ class _LoginState extends State<Login> {
                       side: MaterialStateProperty.all(
                           const BorderSide(color: Colors.black, width: 4)),
                       fixedSize: MaterialStateProperty.all<Size>(
-                        const Size(
-                            double.maxFinite, 48), // Set width to maximum
+                        const Size(double.maxFinite,
+                            48), // Genişliği maksimuma ayarladık
                       ),
                       backgroundColor: MaterialStateProperty.all<Color>(
                         Colors.blue, // Background color
@@ -114,7 +114,7 @@ class _LoginState extends State<Login> {
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.circular(15), // Set radius to 20
+                              BorderRadius.circular(15), // Set radius to 15
                         ),
                       ),
                       overlayColor: MaterialStateProperty.all<Color>(

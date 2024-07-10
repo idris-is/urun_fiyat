@@ -5,7 +5,8 @@
 import 'package:flutter/material.dart';
 
 class MyColors {
-  Color myBlack = Colors.black;
+  Color myBorderColor = Colors.black;
+  Color myTextColor = Colors.black;
 }
 
 class MyTexts {
@@ -31,4 +32,21 @@ class MyTexts {
   String galeri = 'Galeri';
   String uBulunamadi = 'Ürün bulunamadı';
   String uEkle = 'Ürün Ekle';
+  String gorselYuklenmeHatasi = 'Görsel yüklenirken bir hata oluştu: ';
+  String gorselSecin = 'Lütfen bir fotoğraf seçin.';
+  String hataOlustu = 'Bir hata oluştu: ';
+  String  fiyat  = 'Fiyat';
+  String appName = 'Ürün Fiyat';
+  String urunSilindi = 'Ürün silindi';
+  String geriAl = 'Geri Al';
+  String adi = 'Adı: ';
+  String marka = 'Marka: ';
+  String cinsi = 'Cinsi: ';
+  String tl = 'TL';
+  String urunMevcut = 'Bu marka ve ad ile zaten bir ürün mevcut.';
 }
+
+class MySize{
+  double myFontSize20 = 20;
+}
+

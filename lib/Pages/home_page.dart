@@ -52,15 +52,15 @@ class _HomePageState extends State<HomePage> {
                     contentPadding: const EdgeInsets.all(20),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
+                      borderSide: BorderSide(
+                        color: MyColors().myBorderColor,
                         width: 3,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
-                      borderSide: const BorderSide(
-                        color: Colors.black,
+                      borderSide: BorderSide(
+                        color: MyColors().myBorderColor,
                         width: 3,
                       ),
                     ),
@@ -79,7 +79,8 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
-                        child: Text('Bir hata oluştu: ${snapshot.error}'));
+                        child:
+                            Text('${MyTexts().hataOlustu} ${snapshot.error}'));
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -178,9 +179,9 @@ class _HomePageState extends State<HomePage> {
     // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('Ürün silindi'),
+        content: Text(MyTexts().urunSilindi),
         action: SnackBarAction(
-          label: 'Geri Al',
+          label: MyTexts().geriAl,
           onPressed: () {
             _firestore.collection('Urun').doc(docId).set(deletedProduct);
           },
@@ -242,7 +243,7 @@ class MyListTile extends StatelessWidget {
                       radius: 35,
                     )
                   : const CircleAvatar(
-                      backgroundImage: AssetImage('assets/foto.png'),
+                      backgroundImage: AssetImage('assets/ic_launcher.png'),
                       radius: 35,
                     ),
             ),
@@ -254,7 +255,7 @@ class MyListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Adı: ${product['Urun Adi']}',
+                   '${MyTexts().adi} ${product['Urun Adi']}',
                   maxLines: 1, // Sadece bir satır göstermek için
                   overflow: TextOverflow
                       .ellipsis, // Taşma durumunda ... göstermek için
@@ -262,13 +263,13 @@ class MyListTile extends StatelessWidget {
                       fontSize: 18, fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Marka: ${product['Urun Markasi']}',
+                  '${MyTexts().marka} ${product['Urun Markasi']}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.w600),
                 ),
                 Text(
-                  'Cinsi: ${product['Urun Cinsi']}',
+                  '${MyTexts().cinsi} ${product['Urun Cinsi']}',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(fontWeight: FontWeight.w600),
@@ -281,14 +282,17 @@ class MyListTile extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              const Text(
-                'Fiyat:',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+              Text(
+                MyTexts().fiyat,
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: MySize().myFontSize20),
               ),
               Text(
-                '${product['Urun Fiyati']} TL',
-                style:
-                    const TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+                '${product['Urun Fiyati']} ${MyTexts().tl}',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: MySize().myFontSize20),
               ),
             ],
           ),
@@ -303,7 +307,8 @@ class MyListTile extends StatelessWidget {
                     },
                     title: Text(
                       MyTexts().guncelle,
-                      style: const TextStyle(color: Colors.black, fontSize: 20),
+                      style: TextStyle(
+                          color: MyColors().myTextColor, fontSize: MySize().myFontSize20),
                     ),
                   ),
                 ),
@@ -315,7 +320,8 @@ class MyListTile extends StatelessWidget {
                     },
                     title: Text(
                       MyTexts().sil,
-                      style: const TextStyle(color: Colors.black, fontSize: 20),
+                      style: TextStyle(
+                          color: MyColors().myTextColor, fontSize: MySize().myFontSize20),
                     ),
                   ),
                 ),

@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:loading_overlay/loading_overlay.dart';
-
 import '../MyFile/String.dart';
 import '../custom_widget/custom_widget.dart';
 
@@ -30,13 +29,11 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
   TextEditingController uAdi = TextEditingController();
   TextEditingController uCinsi = TextEditingController();
   TextEditingController uFiyati = TextEditingController();
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   String? imageUrl; // Ürün fotoğrafı URL'si
   File? imageFile; // Seçilen fotoğraf dosyası
-
-  bool _isLoading = false; // State variable to manage loading overlay
+  bool _isLoading = false; // Yükleme katmanını yönetmek için durum değişkeni
 
   @override
   void initState() {
@@ -76,7 +73,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                   padding: const EdgeInsets.only(top: 60, right: 15, left: 15),
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 4),
+                      border: Border.all(color: MyColors().myBorderColor, width: 4),
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.blue,
                     ),
@@ -98,7 +95,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                           ? NetworkImage(imageUrl!)
                                           : AssetImage(imageUrl!)
                                               as ImageProvider)
-                                      : const AssetImage('assets/ic_launcher.png'),
+                                      : const AssetImage(
+                                          'assets/ic_launcher.png'),
                               radius: 50,
                             ),
                           ),
@@ -188,8 +186,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                             _saveProduct();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Lütfen bir fotoğraf seçin.'),
+                              SnackBar(
+                                content: Text(MyTexts().gorselSecin),
                               ),
                             );
                           }
@@ -217,9 +215,9 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                     ),
                     child: Text(
                       widget.isUpdating ? MyTexts().guncelle : MyTexts().kaydet,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 20,
-                        color: Colors.black,
+                        color: MyColors().myTextColor,
                       ),
                     ),
                   ),
@@ -282,7 +280,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Görsel yüklenirken bir hata oluştu: $e')),
+        SnackBar(content: Text('${MyTexts().gorselYuklenmeHatasi} $e')),
       );
       return null;
     }
@@ -290,7 +288,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
 
   Future<void> _saveProduct() async {
     setState(() {
-      _isLoading = true; // Set loading state to true
+      _isLoading = true; // Yükleme durumunu doğru olarak ayarla
     });
 
     String? downloadUrl = await _uploadImage(imageFile!);
@@ -300,30 +298,31 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       'Urun Adi': uAdi.text.toLowerCase(),
       'Urun Cinsi': uCinsi.text.toLowerCase(),
       'Urun Fiyati': uFiyati.text,
-      'imageUrl': downloadUrl ?? 'assets/foto.png',
+      'imageUrl': downloadUrl ?? 'assets/ic_launcher.png',
     };
 
-    // Check if the product with the same brand and name already exists
+    // Aynı marka ve isimdeki ürünün zaten mevcut olup olmadığını kontrol etmek için
     QuerySnapshot snapshot = await _firestore
         .collection('Urun')
         .where('Urun Markasi', isEqualTo: uMarkasi.text.toLowerCase())
         .where('Urun Adi', isEqualTo: uAdi.text.toLowerCase())
         .get();
 
-    // Save or show error if product with same brand and name exists
+    // Aynı marka ve isimde ürün mevcutsa hatayı kaydedin veya gösterin
     if (snapshot.docs.isEmpty) {
       await _firestore.collection('Urun').add(saveData);
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Bu marka ve ad ile zaten bir ürün mevcut.'),
+         SnackBar(
+          content: Text(MyTexts().urunMevcut),
         ),
       );
     }
 
     setState(() {
-      _isLoading = false; // Set loading state to false after saving/updating
+      _isLoading =
+          false; // Kaydettikten/güncelledikten sonra yükleme durumunu false olarak ayarlayın
     });
 
     // ignore: use_build_context_synchronously
@@ -332,11 +331,11 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
 
   Future<void> _updateProduct() async {
     setState(() {
-      _isLoading = true; // Set loading state to true
+      _isLoading = true; // Yükleme durumunu true olarak ayarla
     });
 
     String? downloadUrl =
-        imageUrl; // Use existing imageUrl if imageFile is null
+        imageUrl; // imageFile null ise mevcut imageUrl'yi kullanın
 
     if (imageFile != null) {
       downloadUrl = await _uploadImage(imageFile!);
@@ -347,13 +346,14 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       'Urun Adi': uAdi.text.toLowerCase(),
       'Urun Cinsi': uCinsi.text.toLowerCase(),
       'Urun Fiyati': uFiyati.text,
-      'imageUrl': downloadUrl ?? 'assets/foto.png',
+      'imageUrl': downloadUrl ?? 'assets/ic_launcher.png',
     };
 
     await _firestore.collection('Urun').doc(widget.docId).update(updateData);
 
     setState(() {
-      _isLoading = false; // Set loading state to false after saving/updating
+      _isLoading =
+          false; // Kaydettikten/güncelledikten sonra yükleme durumunu false olarak ayarlayın
     });
 
     // ignore: use_build_context_synchronously
