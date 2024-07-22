@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:image/image.dart' as img;
 import '../MyFile/String.dart';
 import '../custom_widget/custom_widget.dart';
 
@@ -73,7 +75,8 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                   padding: const EdgeInsets.only(top: 60, right: 15, left: 15),
                   child: Container(
                     decoration: BoxDecoration(
-                      border: Border.all(color: MyColors().myBorderColor, width: 4),
+                      border:
+                          Border.all(color: MyColors().myBorderColor, width: 4),
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.blue,
                     ),
@@ -271,11 +274,32 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
     }
   }
 
+  Future<File> _compressImage(File imageFile) async {
+    final bytes = await imageFile.readAsBytes();
+    img.Image? image = img.decodeImage(bytes);
+
+    if (image == null) return imageFile;
+
+    // Görüntüyü yeniden boyutlandır ve sıkıştır
+    img.Image resizedImage = img.copyResize(image, width: 600);
+
+    final compressedBytes = img.encodeJpg(resizedImage, quality: 70);
+
+    final tempDir = await getTemporaryDirectory();
+    final tempFile = File('${tempDir.path}/temp.jpg');
+    await tempFile.writeAsBytes(compressedBytes);
+
+    return tempFile;
+  }
+
   Future<String?> _uploadImage(File imageFile) async {
     try {
+      // Resmi sıkıştır
+      File compressedImage = await _compressImage(imageFile);
+
       final fileName = DateTime.now().millisecondsSinceEpoch.toString();
       final storageRef = _storage.ref().child('urunler/$fileName');
-      final uploadTask = storageRef.putFile(imageFile);
+      final uploadTask = storageRef.putFile(compressedImage);
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
@@ -314,7 +338,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
     } else {
       // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
-         SnackBar(
+        SnackBar(
           content: Text(MyTexts().urunMevcut),
         ),
       );

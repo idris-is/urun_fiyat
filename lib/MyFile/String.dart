@@ -44,6 +44,10 @@ class MyTexts {
   String cinsi = 'Cinsi: ';
   String tl = 'TL';
   String urunMevcut = 'Bu marka ve ad ile zaten bir ürün mevcut.';
+  String urunBasariylaEklendi = 'Ürün Başarıyla Eklendi';
+  String urunEklemeHatasi = "Ürün eklenirken bir hata oluştu";
+  String urunBasariylaGuncellendi = 'Ürün Başarıyla Güncellendi';
+  String urunGuncellemeHatasi = "Ürün güncellenirken bir hata oluştu";
 }
 
 class MySize{
