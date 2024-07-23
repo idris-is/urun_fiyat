@@ -330,6 +330,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
         .collection('Urun')
         .where('Urun Markasi', isEqualTo: uMarkasi.text.toLowerCase())
         .where('Urun Adi', isEqualTo: uAdi.text.toLowerCase())
+        .where('Urun Cinsi',isEqualTo: uCinsi.text.toLowerCase())
         .get();
 
     // Aynı marka ve isimde ürün mevcutsa hatayı kaydedin veya gösterin
