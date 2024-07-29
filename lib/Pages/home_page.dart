@@ -176,18 +176,22 @@ class _HomePageState extends State<HomePage> {
 
     await _firestore.collection('Urun').doc(docId).delete();
 
-    // ignore: use_build_context_synchronously
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(MyTexts().urunSilindi),
-        action: SnackBarAction(
-          label: MyTexts().geriAl,
-          onPressed: () {
-            _firestore.collection('Urun').doc(docId).set(deletedProduct);
-          },
-        ),
-      ),
-    );
+    // snackbar'ı geciktirmek için Future.microtask kullanın
+    Future.microtask(() {
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(MyTexts().urunSilindi),
+            action: SnackBarAction(
+              label: MyTexts().geriAl,
+              onPressed: () {
+                _firestore.collection('Urun').doc(docId).set(deletedProduct);
+              },
+            ),
+          ),
+        );
+      }
+    });
   }
 }
 
@@ -255,7 +259,7 @@ class MyListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                   '${MyTexts().adi} ${product['Urun Adi']}',
+                  '${MyTexts().adi} ${product['Urun Adi']}',
                   maxLines: 1, // Sadece bir satır göstermek için
                   overflow: TextOverflow
                       .ellipsis, // Taşma durumunda ... göstermek için
@@ -308,7 +312,8 @@ class MyListTile extends StatelessWidget {
                     title: Text(
                       MyTexts().guncelle,
                       style: TextStyle(
-                          color: MyColors().myTextColor, fontSize: MySize().myFontSize20),
+                          color: MyColors().myTextColor,
+                          fontSize: MySize().myFontSize20),
                     ),
                   ),
                 ),
@@ -321,7 +326,8 @@ class MyListTile extends StatelessWidget {
                     title: Text(
                       MyTexts().sil,
                       style: TextStyle(
-                          color: MyColors().myTextColor, fontSize: MySize().myFontSize20),
+                          color: MyColors().myTextColor,
+                          fontSize: MySize().myFontSize20),
                     ),
                   ),
                 ),
