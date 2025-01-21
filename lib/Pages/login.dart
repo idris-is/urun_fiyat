@@ -102,25 +102,25 @@ class _LoginState extends State<Login> {
                   child: ElevatedButton(
                     onPressed: login,
                     style: ButtonStyle(
-                      side: MaterialStateProperty.all(
+                      side: WidgetStateProperty.all(
                           const BorderSide(color: Colors.black, width: 4)),
-                      fixedSize: MaterialStateProperty.all<Size>(
+                      fixedSize: WidgetStateProperty.all<Size>(
                         const Size(double.maxFinite,
                             48), // Genişliği maksimuma ayarladık
                       ),
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                         Colors.blue, // Background color
                       ),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(15), // Set radius to 15
                         ),
                       ),
-                      overlayColor: MaterialStateProperty.all<Color>(
+                      overlayColor: WidgetStateProperty.all<Color>(
                         Colors.green, // Overlay color
                       ),
-                      shadowColor: MaterialStateProperty.all<Color>(
+                      shadowColor: WidgetStateProperty.all<Color>(
                         Colors.blue, // Shadow color
                       ),
                     ),

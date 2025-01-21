@@ -20,14 +20,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topRight,
-            end: Alignment.bottomLeft,
-            colors: [
-              Colors.white,
-              Colors.green,
-            ],
-          ),
+          color: Color(0xFFade8f4)
         ),
         child: Column(
           children: [
@@ -48,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     filled: true,
-                    fillColor: Colors.blue,
+                    fillColor: Color(0xFF48cae4),
                     contentPadding: const EdgeInsets.all(20),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
@@ -74,61 +67,66 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             Expanded(
-              child: StreamBuilder<QuerySnapshot>(
-                stream: _firestore.collection('Urun').snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Center(
-                        child:
-                            Text('${MyTexts().hataOlustu} ${snapshot.error}'));
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final products = snapshot.data!.docs.map((doc) {
-                    return {
-                      'id': doc.id,
-                      ...doc.data() as Map<String, dynamic>,
-                    };
-                  }).where((product) {
-                    final productName =
-                        product['Urun Adi'].toString().toLowerCase();
-                    final productBrand =
-                        product['Urun Markasi'].toString().toLowerCase();
-                    final searchLower = searchQuery.toLowerCase();
-                    return productName.contains(searchLower) ||
-                        productBrand.contains(searchLower);
-                  }).toList();
-
-                  if (products.isEmpty) {
-                    return Center(
-                      child: Text(
-                        MyTexts().uBulunamadi,
-                        style: const TextStyle(fontSize: 20),
-                      ),
-                    );
-                  }
-
-                  return ListView.builder(
-                    itemCount: products.length,
-                    itemBuilder: (context, index) {
-                      return MyListTile(
-                        product: products[index],
-                        onUpdate: () => gotoUpdate(context, products[index]),
-                        onDelete: () => deleteProduct(context, products[index]),
-                      );
-                    },
-                  );
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  await _firestore.collection('Urun').snapshots();
                 },
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: _firestore.collection('Urun').snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(
+                          child:
+                              Text('${MyTexts().hataOlustu} ${snapshot.error}'));
+                    }
+                
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                
+                    final products = snapshot.data!.docs.map((doc) {
+                      return {
+                        'id': doc.id,
+                        ...doc.data() as Map<String, dynamic>,
+                      };
+                    }).where((product) {
+                      final productName =
+                          product['Urun Adi'].toString().toLowerCase();
+                      final productBrand =
+                          product['Urun Markasi'].toString().toLowerCase();
+                      final searchLower = searchQuery.toLowerCase();
+                      return productName.contains(searchLower) ||
+                          productBrand.contains(searchLower);
+                    }).toList();
+                
+                    if (products.isEmpty) {
+                      return Center(
+                        child: Text(
+                          MyTexts().uBulunamadi,
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                      );
+                    }
+                
+                    return ListView.builder(
+                      itemCount: products.length,
+                      itemBuilder: (context, index) {
+                        return MyListTile(
+                          product: products[index],
+                          onUpdate: () => gotoUpdate(context, products[index]),
+                          onDelete: () => deleteProduct(context, products[index]),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Colors.green,
+        backgroundColor: Color(0xFF48cae4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: Colors.black, width: 3),
@@ -214,7 +212,7 @@ class MyListTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10, top: 10, left: 15, right: 15),
       decoration: BoxDecoration(
-        color: Colors.blue,
+        color: Color(0xFF48cae4),
         border: Border.all(color: Colors.black, width: 3),
         borderRadius: BorderRadius.circular(20),
       ),

@@ -58,16 +58,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  Colors.white,
-                  Colors.green,
-                ],
-                begin: Alignment.topRight,
-                end: Alignment.bottomLeft,
-              ),
-            ),
+            decoration: const BoxDecoration(color: Color(0xFFade8f4)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -78,7 +69,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                       border:
                           Border.all(color: MyColors().myBorderColor, width: 4),
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.blue,
+                      color: Color(0xFF48cae4),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,23 +189,23 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                       }
                     },
                     style: ButtonStyle(
-                      side: MaterialStateProperty.all(
+                      side: WidgetStateProperty.all(
                         const BorderSide(color: Colors.black, width: 4),
                       ),
-                      fixedSize: MaterialStateProperty.all<Size>(
+                      fixedSize: WidgetStateProperty.all<Size>(
                         const Size(double.maxFinite, 48),
                       ),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
+                        Color(0xFF48cae4),
+                      ),
+                      shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
                       overlayColor:
-                          MaterialStateProperty.all<Color>(Colors.green),
-                      shadowColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
+                          WidgetStateProperty.all<Color>(Color(0xFF0096c7),),
+                      shadowColor: WidgetStateProperty.all<Color>(Colors.blue),
                     ),
                     child: Text(
                       widget.isUpdating ? MyTexts().guncelle : MyTexts().kaydet,
@@ -303,6 +294,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
       final snapshot = await uploadTask.whenComplete(() {});
       return await snapshot.ref.getDownloadURL();
     } catch (e) {
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('${MyTexts().gorselYuklenmeHatasi} $e')),
       );
@@ -330,7 +322,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
         .collection('Urun')
         .where('Urun Markasi', isEqualTo: uMarkasi.text.toLowerCase())
         .where('Urun Adi', isEqualTo: uAdi.text.toLowerCase())
-        .where('Urun Cinsi',isEqualTo: uCinsi.text.toLowerCase())
+        .where('Urun Cinsi', isEqualTo: uCinsi.text.toLowerCase())
         .get();
 
     // Aynı marka ve isimde ürün mevcutsa hatayı kaydedin veya gösterin
