@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../MyFile/String.dart';
 
-class CustomWidget {
+class MyTextFormField {
   TextFormField myTextFormField({
     required String labelText,
     required TextInputAction textInputAction,

@@ -36,7 +36,6 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
   String? imageUrl; // Ürün fotoğrafı URL'si
   File? imageFile; // Seçilen fotoğraf dosyası
   bool _isLoading = false; // Yükleme katmanını yönetmek için durum değişkeni
-
   @override
   void initState() {
     super.initState();
@@ -52,13 +51,15 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFade8f4),
+      appBar: AppBar(
+        title: Text(widget.isUpdating ? MyTexts().guncelle : MyTexts().kaydet),
+      ),
       body: LoadingOverlay(
         isLoading: _isLoading,
         child: SingleChildScrollView(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
+          child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            decoration: const BoxDecoration(color: Color(0xFFade8f4)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -69,7 +70,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                       border:
                           Border.all(color: MyColors().myBorderColor, width: 4),
                       borderRadius: BorderRadius.circular(20),
-                      color: Color(0xFF48cae4),
+                      color: const Color(0xFF48cae4),
                     ),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -81,17 +82,23 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
-                            child: CircleAvatar(
-                              backgroundImage: imageFile != null
-                                  ? FileImage(imageFile!)
-                                  : imageUrl != null
-                                      ? (imageUrl!.startsWith('http')
-                                          ? NetworkImage(imageUrl!)
-                                          : AssetImage(imageUrl!)
-                                              as ImageProvider)
-                                      : const AssetImage(
-                                          'assets/ic_launcher.png'),
-                              radius: 50,
+                            child: Hero(
+                              createRectTween: (begin, end) {
+                                return RectTween(begin: begin, end: end);
+                              },
+                              tag: widget.product['id'] ?? 'new_image',
+                              child: CircleAvatar(
+                                backgroundImage: imageFile != null
+                                    ? FileImage(imageFile!)
+                                    : imageUrl != null
+                                        ? (imageUrl!.startsWith('http')
+                                            ? NetworkImage(imageUrl!)
+                                            : AssetImage(imageUrl!)
+                                                as ImageProvider)
+                                        : const AssetImage(
+                                            'assets/ic_launcher.png'),
+                                radius: 100,
+                              ),
                             ),
                           ),
                         ),
@@ -101,7 +108,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                             padding: const EdgeInsets.all(15.0),
                             child: Column(
                               children: [
-                                CustomWidget().myTextFormField(
+                                MyTextFormField().myTextFormField(
                                   hintText: MyTexts().umHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -116,7 +123,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   keyboardType: TextInputType.name,
                                 ),
                                 const SizedBox(height: 20),
-                                CustomWidget().myTextFormField(
+                                MyTextFormField().myTextFormField(
                                   hintText: MyTexts().uaHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -131,7 +138,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   keyboardType: TextInputType.name,
                                 ),
                                 const SizedBox(height: 20),
-                                CustomWidget().myTextFormField(
+                                MyTextFormField().myTextFormField(
                                   hintText: MyTexts().ucHinttext,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -146,7 +153,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                                   keyboardType: TextInputType.text,
                                 ),
                                 const SizedBox(height: 20),
-                                CustomWidget().myTextFormField(
+                                MyTextFormField().myTextFormField(
                                   hintText: MyTexts().ufHintText,
                                   validator: (value) {
                                     if (value!.isEmpty) {
@@ -169,7 +176,11 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: const EdgeInsets.only(
+                    top: 100,
+                    left: 20,
+                    right: 20,
+                  ),
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
@@ -196,15 +207,16 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                         const Size(double.maxFinite, 48),
                       ),
                       backgroundColor: WidgetStateProperty.all<Color>(
-                        Color(0xFF48cae4),
+                        const Color(0xFF48cae4),
                       ),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
                       ),
-                      overlayColor:
-                          WidgetStateProperty.all<Color>(Color(0xFF0096c7),),
+                      overlayColor: WidgetStateProperty.all<Color>(
+                        const Color(0xFF0096c7),
+                      ),
                       shadowColor: WidgetStateProperty.all<Color>(Colors.blue),
                     ),
                     child: Text(

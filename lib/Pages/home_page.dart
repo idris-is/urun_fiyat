@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:urun_fiyat/MyFile/String.dart';
 import 'package:urun_fiyat/Pages/urun_kaydetme.dart';
+import 'package:urun_fiyat/custom_widget/animation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +19,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFade8f4),
       body: Container(
         decoration: const BoxDecoration(
           color: Color(0xFFade8f4)
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                       borderRadius: BorderRadius.circular(20.0),
                     ),
                     filled: true,
-                    fillColor: Color(0xFF48cae4),
+                    fillColor: const Color(0xFF48cae4),
                     contentPadding: const EdgeInsets.all(20),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: RefreshIndicator(
                 onRefresh: () async {
-                  await _firestore.collection('Urun').snapshots();
+                  _firestore.collection('Urun').snapshots();
                 },
                 child: StreamBuilder<QuerySnapshot>(
                   stream: _firestore.collection('Urun').snapshots(),
@@ -111,10 +113,13 @@ class _HomePageState extends State<HomePage> {
                     return ListView.builder(
                       itemCount: products.length,
                       itemBuilder: (context, index) {
-                        return MyListTile(
-                          product: products[index],
-                          onUpdate: () => gotoUpdate(context, products[index]),
-                          onDelete: () => deleteProduct(context, products[index]),
+                        return SlideAnimationWidget(
+                          delay: index * 0.001,
+                          child: MyListTile(
+                            product: products[index],
+                            onUpdate: () => gotoUpdate(context, products[index]),
+                            onDelete: () => deleteProduct(context, products[index]),
+                          ),
                         );
                       },
                     );
@@ -126,7 +131,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xFF48cae4),
+        backgroundColor: const Color(0xFF48cae4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
           side: const BorderSide(color: Colors.black, width: 3),
@@ -209,137 +214,215 @@ class MyListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     String? imageUrl = product['imageUrl'];
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 10, top: 10, left: 15, right: 15),
-      decoration: BoxDecoration(
-        color: Color(0xFF48cae4),
-        border: Border.all(color: Colors.black, width: 3),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      padding: const EdgeInsets.all(20),
-      height: 120, // Sabit yükseklik ayarı
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          // Fotoğrafı göstermek için CircleAvatar veya Image widget'ını kullanabilirsiniz
-          SizedBox(
-            width: 70,
-            child: GestureDetector(
-              onTap: () {
-                // Burada resmin büyütüleceği veya ayrıntılarının gösterileceği bir işlem yapabilirsiniz
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Dialog(
-                      child: Image.network(
-                        imageUrl!,
-                      ), // veya istediğiniz büyütme işlemini yapın
-                    );
-                  },
-                );
-              },
-              child: imageUrl != null
-                  ? CircleAvatar(
-                      backgroundImage: NetworkImage(imageUrl),
-                      radius: 35,
-                    )
-                  : const CircleAvatar(
-                      backgroundImage: AssetImage('assets/ic_launcher.png'),
-                      radius: 35,
-                    ),
-            ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailPage(product: product),
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10, top: 10, left: 15, right: 15),
+        decoration: BoxDecoration(
+          color: const Color(0xFF48cae4),
+          border: Border.all(color: Colors.black, width: 3),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        padding: const EdgeInsets.all(20),
+        height: 120, // Sabit yükseklik ayarı
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Fotoğrafı göstermek için CircleAvatar veya Image widget'ını kullanabilirsiniz
+            SizedBox(
+              width: 70,
+              child: GestureDetector(
+                onTap: () {
+                  // Burada resmin büyütüleceği veya ayrıntılarının gösterileceği bir işlem yapabilirsiniz
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Dialog(
+                        child: Image.network(
+                          imageUrl!,
+                        ), // veya istediğiniz büyütme işlemini yapın
+                      );
+                    },
+                  );
+                },
+                child: Hero(
+                  tag: product['id'], // Hero ile eşleşen tag
+                  child: imageUrl != null
+                      ? CircleAvatar(
+                          backgroundImage: NetworkImage(imageUrl),
+                          radius: 35,
+                        )
+                      : const CircleAvatar(
+                          backgroundImage: AssetImage('assets/ic_launcher.png'),
+                          radius: 35,
+                        ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${MyTexts().adi} ${product['Urun Adi']}',
+                    maxLines: 1, // Sadece bir satır göstermek için
+                    overflow: TextOverflow
+                        .ellipsis, // Taşma durumunda ... göstermek için
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '${MyTexts().marka} ${product['Urun Markasi']}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  Text(
+                    '${MyTexts().cinsi} ${product['Urun Cinsi']}',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 10),
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '${MyTexts().adi} ${product['Urun Adi']}',
-                  maxLines: 1, // Sadece bir satır göstermek için
-                  overflow: TextOverflow
-                      .ellipsis, // Taşma durumunda ... göstermek için
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w600),
+                  MyTexts().fiyat,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: MySize().myFontSize20),
                 ),
                 Text(
-                  '${MyTexts().marka} ${product['Urun Markasi']}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
-                ),
-                Text(
-                  '${MyTexts().cinsi} ${product['Urun Cinsi']}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  '${product['Urun Fiyati']} ${MyTexts().tl}',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: MySize().myFontSize20),
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                MyTexts().fiyat,
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: MySize().myFontSize20),
-              ),
-              Text(
-                '${product['Urun Fiyati']} ${MyTexts().tl}',
-                style: TextStyle(
-                    fontWeight: FontWeight.w600,
-                    fontSize: MySize().myFontSize20),
-              ),
-            ],
-          ),
-          PopupMenuButton(
-            itemBuilder: (context) {
-              return [
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.pop(context);
-                      onUpdate();
-                    },
-                    title: Text(
-                      MyTexts().guncelle,
-                      style: TextStyle(
-                          color: MyColors().myTextColor,
-                          fontSize: MySize().myFontSize20),
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  PopupMenuItem(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pop(context);
+                        onUpdate();
+                      },
+                      title: Text(
+                        MyTexts().guncelle,
+                        style: TextStyle(
+                            color: MyColors().myTextColor,
+                            fontSize: MySize().myFontSize20),
+                      ),
                     ),
                   ),
-                ),
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.pop(context);
-                      onDelete();
-                    },
-                    title: Text(
-                      MyTexts().sil,
-                      style: TextStyle(
-                          color: MyColors().myTextColor,
-                          fontSize: MySize().myFontSize20),
+                  PopupMenuItem(
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pop(context);
+                        onDelete();
+                      },
+                      title: Text(
+                        MyTexts().sil,
+                        style: TextStyle(
+                            color: MyColors().myTextColor,
+                            fontSize: MySize().myFontSize20),
+                      ),
                     ),
                   ),
+                ];
+              },
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: const BorderSide(
+                  color: Colors.black,
                 ),
-              ];
-            },
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-              side: const BorderSide(
-                color: Colors.black,
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class ProductDetailPage extends StatelessWidget {
+  final Map<String, dynamic> product;
+
+  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String? imageUrl = product['imageUrl'];
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(product['Urun Adi']),
+        backgroundColor: const Color(0xFF48cae4),
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const SizedBox(height: 20),
+          Hero(
+            tag: product['id'], // Hero widget ile aynı tag
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: imageUrl != null
+                  ? Image.network(
+                      imageUrl,
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.cover,
+                    )
+                  : const Image(
+                      image: AssetImage('assets/ic_launcher.png'),
+                      width: 200,
+                      height: 200,
+                    ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '${MyTexts().adi} ${product['Urun Adi']}',
+            style: const TextStyle(
+                fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${MyTexts().marka} ${product['Urun Markasi']}',
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${MyTexts().cinsi} ${product['Urun Cinsi']}',
+            style: const TextStyle(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            '${MyTexts().fiyat}: ${product['Urun Fiyati']} ${MyTexts().tl}',
+            style: const TextStyle(
+                fontSize: 20, fontWeight: FontWeight.w600),
           ),
         ],
       ),
     );
   }
 }
+
