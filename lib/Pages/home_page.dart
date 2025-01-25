@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:urun_fiyat/MyFile/String.dart';
 import 'package:urun_fiyat/Pages/urun_kaydetme.dart';
-import 'package:urun_fiyat/custom_widget/animation.dart';
+import 'package:urun_fiyat/widgets/animation.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

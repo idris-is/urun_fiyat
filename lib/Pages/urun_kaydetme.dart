@@ -7,7 +7,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:image/image.dart' as img;
 import '../MyFile/String.dart';
-import '../custom_widget/custom_widget.dart';
+import '../widgets/custom_widget.dart';
 
 class UrunKaydetme extends StatefulWidget {
   final bool isUpdating;
@@ -77,6 +77,28 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
                       children: [
                         GestureDetector(
                           onTap: () => _showImageSourceActionSheet(context),
+                          onLongPress: (){
+                            showDialog(context: context, builder: (BuildContext context){
+                              return Dialog(
+                                child: Container(
+                                  height: 300,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: imageFile != null
+                                          ? FileImage(imageFile!)
+                                          : imageUrl != null
+                                          ? (imageUrl!.startsWith('http')
+                                          ? NetworkImage(imageUrl!)
+                                          : AssetImage(imageUrl!) as ImageProvider)
+                                          : const AssetImage('assets/ic_launcher.png'),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            });
+                          },
                           child: Container(
                             padding: const EdgeInsets.all(12),
                             decoration: const BoxDecoration(
