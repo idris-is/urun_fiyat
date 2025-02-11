@@ -59,6 +59,7 @@ class _UrunKaydetmeState extends State<UrunKaydetme> {
         isLoading: _isLoading,
         child: SingleChildScrollView(
           child: SizedBox(
+            height: MediaQuery.of(context).size.height-100,
             width: MediaQuery.of(context).size.width,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

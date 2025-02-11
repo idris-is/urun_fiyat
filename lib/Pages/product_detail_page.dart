@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../MyFile/String.dart';
+
 class ProductDetailPage extends StatelessWidget {
   final Map<String, dynamic> product;
 
@@ -44,24 +45,26 @@ class ProductDetailPage extends StatelessWidget {
               const SizedBox(height: 20),
               Text(
                 '${MyTexts().adi} ${product['Urun Adi']}',
-                style: const TextStyle(
-                    fontSize: 24, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 '${MyTexts().marka} ${product['Urun Markasi']}',
-                style: const TextStyle(fontSize: 18),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 '${MyTexts().cinsi} ${product['Urun Cinsi']}',
-                style: const TextStyle(fontSize: 18),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
               Text(
                 '${MyTexts().fiyat}: ${product['Urun Fiyati']} ${MyTexts().tl}',
-                style: const TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w600),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -70,4 +73,3 @@ class ProductDetailPage extends StatelessWidget {
     );
   }
 }
-
